@@ -7,6 +7,10 @@ class BasePage:
     def __init__(self, driver):
         self.driver = driver
 
+    def set_loc_token(self, access_token, refresh_token):
+        self.driver.execute_script(f'window.localStorage.setItem("accessToken", "{access_token}");')
+        self.driver.execute_script(f'window.localStorage.setItem("refresh_token", "{refresh_token}");')
+
     def click_problem_element(self, locator):
         element = WebDriverWait(self.driver, 20).until(expected_conditions.element_to_be_clickable(locator))
         ActionChains(self.driver).move_to_element(element).click().perform()

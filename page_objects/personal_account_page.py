@@ -18,6 +18,7 @@ class PersonalAccountPage(BasePage):
 
     @allure.step('Клик по кнопке "Выйти"')
     def click_on_logout_button(self):
+        self.wait_visibility_of_element(PersonalAccountLocators.LOGOUT)
         self.click_on_element(PersonalAccountLocators.LOGOUT)
 
     @allure.step('Ожидание прогрузки теста описания раздела')

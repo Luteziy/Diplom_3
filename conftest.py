@@ -4,6 +4,7 @@ import requests
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.chrome.options import Options
+from page_objects.base_page import BasePage
 from data import Data, Url
 from helpers import create_random_email, create_random_password, create_random_name
 
@@ -21,15 +22,6 @@ def driver(request):
     driver.get(Data.MAIN_PAGE_URL)
     yield driver
     driver.quit()
-
-
-@pytest.fixture
-@allure.title('Генерация рандомного юзера')
-def create_and_delete_new_user():
-    email = create_random_email(),
-    password = create_random_password(),
-    name = create_random_name()
-    return email, password, name
 
 @pytest.fixture
 @allure.title('Создание и удаление юзера')
@@ -68,5 +60,5 @@ def set_token(driver, create_and_delete_new_user):
     user = create_and_delete_new_user[1]
     access_token = user.get('accessToken')
     refresh_token = user.get('refreshToken')
-    driver.execute_script(f'window.localStorage.setItem("accessToken", "{access_token}");')
-    driver.execute_script(f'window.localStorage.setItem("refreshToken", "{refresh_token}");')
+    base_page = BasePage(driver)
+    base_page.set_loc_token(access_token, refresh_token)
